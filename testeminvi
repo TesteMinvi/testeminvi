@@ -1,0 +1,19 @@
+from flask import Flask, request
+
+app = Flask(__name__)
+
+VERIFY_TOKEN = "iasmym2024"  # mesmo token que você colocou no Facebook
+
+@app.route("/webhook", methods=["GET", "POST"])
+def webhook():
+    if request.method == "GET":
+        # Verificação do Webhook
+        token = request.args.get("hub.verify_token")
+        challenge = request.args.get("hub.challenge")
+        if token == VERIFY_TOKEN:
+            return challenge
+        return "Token inválido", 403
+
+    elif request.method == "POST":
+        # Aqui entra o restante da lógica do bot (como já vimos antes)
+        return "ok", 200
